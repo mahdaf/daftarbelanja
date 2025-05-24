@@ -10,21 +10,21 @@ const TaskItem = ({ item, deleteItem, enterEditMode }) => {
       <div className={styles["task-group"]}>
         {/* Hapus checkbox */}
         <img
-          src={item.image}
-          alt={item.name}
+          src={item.img}
+          alt={item.nama}
           className={styles.image}
           style={{ width: '100px', height: '80px' }}
         />
         <div className={styles.textContainer}>
-          <p><strong>Nama:</strong> {item.name}</p>
-          <p><strong>Harga:</strong> Rp{item.price}</p>
-          <p><strong>Jumlah:</strong> {item.quantity}</p>
+          <p><strong>Nama:</strong> {item.nama}</p>
+          <p><strong>Harga:</strong> Rp{item.harga}</p>
+          <p><strong>Jumlah:</strong> {item.jumlah}</p>
         </div>
       </div>
       <div className={styles["task-group"]}>
         <button
           className='btn'
-          aria-label={`Update ${item.name}`}
+          aria-label={`Update ${item.nama}`}
           onClick={() => enterEditMode(item)}
         >
           <PencilSquareIcon width={24} height={24} />
@@ -32,7 +32,7 @@ const TaskItem = ({ item, deleteItem, enterEditMode }) => {
 
         <button
           className={`btn ${styles.delete}`}
-          aria-label={`Delete ${item.name}`}
+          aria-label={`Delete ${item.nama}`}
           onClick={() => deleteItem(item.id)}
         >
           <TrashIcon width={24} height={24} />

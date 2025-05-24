@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // custom hooks
-import useLocalStorage from './hooks/useLocalStorage';
+import useFirestoreCollection from './hooks/useFirestoreCollection';
 
 // custom components
 import CustomForm from './components/CustomForm';
@@ -10,46 +10,50 @@ import TaskList from './components/TaskList';
 import ThemeSwitcher from './components/ThemeSwitcher';
 
 function App() {
-  const [items, setItems] = useLocalStorage('shopping-list.items', []);
+  const { items, loading, error, addItem, updateItem, deleteItem } = useFirestoreCollection();
   const [editedItem, setEditedItem] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const addItem = (item) => {
-    // Validasi data
-    if (!item.name || !item.price || !item.quantity) {
+  // Validasi dan tambah item
+  const handleAddItem = (item) => {
+    if (!item.nama || !item.harga || !item.jumlah) {
       alert("Semua field harus diisi!");
       return;
     }
-
-    // Tambahkan properti default
     const newItem = {
-      ...item,
-      isPurchased: false, // Default belum dibeli
+      nama: item.nama,
+      harga: item.harga,
+      jumlah: item.jumlah,
+      img: item.img
     };
-
-    // Tambahkan item ke daftar
-    setItems((prevState) => [...prevState, newItem]);
+    addItem(newItem);
   };
 
-  const deleteItem = (id) => {
-    setItems(prevState => prevState.filter(i => i.id !== id));
-  };
-
-  const updateItem = (item) => {
-    setItems(prevState => prevState.map(i => (
-      i.id === item.id ? { ...i, ...item } : i
-    )));
+  // Update item
+  const handleUpdateItem = (item) => {
+    updateItem({
+      id: item.id,
+      nama: item.nama,
+      harga: item.harga,
+      jumlah: item.jumlah,
+      img: item.img
+    });
     setIsEditing(false);
     setEditedItem(null);
   };
 
-  const togglePurchased = (id) => {
-    setItems(prevState =>
-      prevState.map(item =>
-        item.id === id ? { ...item, isPurchased: !item.isPurchased } : item
-      )
-    );
+  // Delete item
+  const handleDeleteItem = (id) => {
+    deleteItem(id);
+  };
+
+  // Toggle purchased
+  const handleTogglePurchased = (id) => {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      updateItem({ ...item, isPurchased: !item.isPurchased });
+    }
   };
 
   const enterEditMode = (item) => {
@@ -58,7 +62,7 @@ function App() {
   };
 
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    item.nama && item.nama.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -69,11 +73,11 @@ function App() {
       {isEditing && (
         <EditForm
           editedTask={editedItem}
-          updateTask={updateItem}
+          updateTask={handleUpdateItem}
           closeEditMode={() => setIsEditing(false)}
         />
       )}
-      <CustomForm addItem={addItem} />
+      <CustomForm addItem={handleAddItem} />
       <div className="search-wrapper">
         <input
           type="text"
@@ -83,12 +87,16 @@ function App() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {filteredItems && (
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p style={{ color: 'red' }}>{error}</p>
+      ) : filteredItems && (
         <TaskList
           items={filteredItems}
-          deleteItem={deleteItem}
+          deleteItem={handleDeleteItem}
           enterEditMode={enterEditMode}
-          togglePurchased={togglePurchased} // Pass togglePurchased function
+          togglePurchased={handleTogglePurchased}
         />
       )}
       <ThemeSwitcher />
