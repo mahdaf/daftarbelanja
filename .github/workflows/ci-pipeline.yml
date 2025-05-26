@@ -26,11 +26,11 @@ jobs:
         with:
           node-version: 18 
 
-      # Langkah 3: Menginstal dependensi proyek
+      # Langkah 3: Menginstal dependensi
       - name: Install Dependencies
         run: npm install
 
-      # Langkah 4: Membangun (build) aplikasi
+      # Langkah 4: Membangun aplikasi
       - name: Build Application
         run: npm run build
 
