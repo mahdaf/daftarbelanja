@@ -13,7 +13,7 @@ Aplikasi Daftar Belanja adalah sebuah aplikasi web yang dirancang untuk membantu
     * Ubah warna aksen utama aplikasi untuk personalisasi tampilan.
 * **Unggah Gambar**: Tambahkan gambar untuk setiap barang belanjaan untuk referensi visual yang lebih baik.
 
-## 🛠️ Tumpukan Teknologi (Tech Stack)
+## 🛠️ Teknologi (Tech Stack)
 
 Proyek ini dibangun menggunakan beberapa teknologi modern:
 
