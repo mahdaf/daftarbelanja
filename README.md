@@ -1,4 +1,4 @@
-# Aplikasi Daftar Belanja (Shopping List)
+# Aplikasi Daftar Belanja
 
 Aplikasi Daftar Belanja adalah sebuah aplikasi web yang dirancang untuk membantu pengguna mengelola daftar belanja mereka dengan mudah dan efisien. Pengguna dapat menambahkan, melihat, mengedit, dan menghapus barang belanjaan. Setiap barang dapat dilengkapi dengan nama, harga, jumlah, dan gambar untuk visualisasi yang lebih baik. Aplikasi ini dibangun dengan teknologi web modern untuk memberikan pengalaman pengguna yang cepat dan responsif.
 
