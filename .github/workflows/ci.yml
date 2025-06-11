@@ -6,38 +6,22 @@ on:
       - master
 
 jobs:
-  build_and_analyze:
-    name: Build and Analyze
+ sonarqube:
+    name: SonarQube Analysis
     runs-on: ubuntu-latest
-
     steps:
-      # Langkah 1: Mengunduh kode dari repositori
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Diperlukan agar SonarScanner bisa menganalisis riwayat Git
+          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
 
-      # Langkah 2: Menyiapkan lingkungan Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18 
-
-      # Langkah 3: Menginstal dependensi
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
-      # Langkah 4: Membangun aplikasi
-      - name: Build Application
-        run: npm run build
+      - name: Run tests and coverage
+        run: npm run test --coverage
 
-      # Langkah 5: Menjalankan SonarCloud Scan
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: Run SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN2 }} 
-        with:
-            args: >
-              -Dsonar.projectKey=mahdaf_daftarbelanja
-              -Dsonar.organization=mahdaf
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
